@@ -31,6 +31,10 @@ export class JobExecution {
     return DateTimeUtils.formatAsDateTime(this.startTime);
   }
 
+  public get endTimeFormatted(): string {
+    return DateTimeUtils.formatAsDateTime(this.endTime);
+  }
+
   static fromJSON(input): JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.name = input.name;
@@ -62,6 +66,7 @@ export class JobExecution {
     const jobExecution: JobExecution = new JobExecution();
     jobExecution.name = input.name;
     jobExecution.startTime = DateTime.fromISO(input.startDateTime);
+    jobExecution.endTime = DateTime.fromISO(input.endDateTime);
     jobExecution.stepExecutionCount = input.stepExecutionCount;
     jobExecution.status = input.status;
     jobExecution.jobExecutionId = input.executionId;

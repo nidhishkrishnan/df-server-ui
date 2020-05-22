@@ -92,7 +92,9 @@ export class StreamsComponent implements OnInit, OnDestroy {
     order: OrderParams.ASC,
     page: 0,
     size: 30,
-    q: ''
+    q: '',
+    name: '',
+    state: ''
   };
 
   /**
@@ -352,7 +354,7 @@ export class StreamsComponent implements OnInit, OnDestroy {
         }),
         mergeMap(
           val => this.appsService.getApps({
-            q: '', type: null, page: 0, size: 1, order: 'name', sort: OrderParams.ASC
+            q: '', type: null, page: 0, size: 1, order: 'name', sort: OrderParams.ASC, name: '', state: ''
           }).pipe(map((val2) => {
             return {
               streams: val,

@@ -19,6 +19,8 @@ export interface ListParams extends SortParams, PaginationParams {
   size: number;
   sort: string;
   order: string;
+  name: string;
+  state: string;
 }
 
 export interface ListDefaultParams extends SortParams, PaginationParams {

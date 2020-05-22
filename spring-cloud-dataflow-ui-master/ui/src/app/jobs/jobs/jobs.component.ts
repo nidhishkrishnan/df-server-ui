@@ -22,6 +22,7 @@ import { GrafanaService } from '../../shared/grafana/grafana.service';
  */
 @Component({
   templateUrl: './jobs.component.html',
+  styleUrls: ['jobs.component.css'],
 })
 export class JobsComponent implements OnInit, OnDestroy {
 
@@ -36,6 +37,16 @@ export class JobsComponent implements OnInit, OnDestroy {
   public jobExecutions: Page<JobExecution>;
 
   /**
+   * Jobs
+   */
+  public jobNames: Array<String>;
+
+  /**
+   * Jobs
+   */
+  public isFilterEnabled: boolean;
+
+  /**
    * State of Job List Params
    * @type {SortParams}
    */
@@ -43,7 +54,9 @@ export class JobsComponent implements OnInit, OnDestroy {
     sort: 'id',
     order: OrderParams.ASC,
     page: 0,
-    size: 30
+    size: 30,
+    name: '',
+    state: ''
   };
 
   /**
@@ -85,12 +98,16 @@ export class JobsComponent implements OnInit, OnDestroy {
    * of {@link JobExecution}s.
    */
   ngOnInit() {
+    this.jobsService.jobsContext.name = '';
+    this.jobsService.jobsContext.state = '';
     this.context = this.jobsService.jobsContext;
     this.params = { ...this.context };
     this.grafanaEnabledSubscription = this.grafanaService.isAllowed().subscribe((active: boolean) => {
       this.grafanaEnabled = active;
     });
     this.loadJobExecutions();
+    this.loadJobNames();
+    this.isFilterEnabled = false;
   }
 
   /**
@@ -171,6 +188,7 @@ export class JobsComponent implements OnInit, OnDestroy {
    * Load a paginated list of {@link JobExecution}s.
    */
   public loadJobExecutions() {
+    this.checkIfFilterEnabled();
     this.jobsService.getJobExecutions(this.params)
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe(page => {
@@ -188,10 +206,29 @@ export class JobsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Load all job names.
+   */
+  public loadJobNames() {
+    this.jobsService.getJobNames()
+      .pipe(takeUntil(this.ngUnsubscribe$))
+      .subscribe(jobs => {
+        if (jobs.length === 0) {
+          this.loadJobNames();
+          return;
+        }
+        this.jobNames = jobs;
+        this.updateContext();
+      }, error => {
+        this.notificationService.error(error);
+      });
+  }
+
+  /**
    * Refresh action
    */
   refresh() {
     this.loadJobExecutions();
+    this.loadJobNames();
   }
 
   /**
@@ -213,6 +250,8 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.context.order = this.params.order;
     this.context.page = this.params.page;
     this.context.size = this.params.size;
+    this.context.name = this.params.name;
+    this.context.state = this.params.state;
   }
 
   /**
@@ -280,5 +319,24 @@ export class JobsComponent implements OnInit, OnDestroy {
     this.grafanaService.getDashboardJobExecution(jobExecution).subscribe((url: string) => {
       window.open(url);
     });
+  }
+
+
+  onJobNameChange(jobName) {
+    this.params.name = jobName;
+    this.loadJobExecutions();
+  }
+
+  onJobStateChange(stateName) {
+    this.params.state = stateName;
+    this.loadJobExecutions();
+  }
+
+  private checkIfFilterEnabled() {
+    if (this.params.name || this.params.state) {
+      this.isFilterEnabled = true;
+    } else {
+      this.isFilterEnabled = false;
+    }
   }
 }

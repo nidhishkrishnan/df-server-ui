@@ -76,7 +76,9 @@ export class TaskDefinitionsComponent implements OnInit, OnDestroy {
     order: OrderParams.ASC,
     page: 0,
     size: 30,
-    q: ''
+    q: '',
+    name: '',
+    state: ''
   };
 
   /**

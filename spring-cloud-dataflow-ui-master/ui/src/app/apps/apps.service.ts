@@ -226,7 +226,9 @@ export class AppsService {
       page: 0,
       size: 1,
       order: 'name',
-      sort: OrderParams.ASC
+      sort: OrderParams.ASC,
+      name: '',
+      state: ''
     });
     const appsForTask$: Observable<Page<AppRegistration>> = this.getApps({
       q: '',
@@ -234,7 +236,9 @@ export class AppsService {
       page: 0,
       size: 1,
       order: 'name',
-      sort: OrderParams.ASC
+      sort: OrderParams.ASC,
+      name: '',
+      state: ''
     });
     return forkJoin([apps$, appsForTask$])
       .pipe(map(obs => {

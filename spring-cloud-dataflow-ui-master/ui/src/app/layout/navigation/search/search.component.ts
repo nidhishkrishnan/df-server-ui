@@ -123,7 +123,9 @@ export class NavigationSearchComponent implements OnInit {
             page: 0,
             size: 5,
             sort: 'name',
-            order: 'ASC'
+            order: 'ASC',
+            name: '',
+            state: ''
           }).subscribe((page: Page<AppRegistration>) => {
             this.resultSearch.app = page;
             this.runningSearch.app = false;
@@ -133,7 +135,9 @@ export class NavigationSearchComponent implements OnInit {
             page: 0,
             size: 5,
             sort: 'name',
-            order: 'ASC'
+            order: 'ASC',
+            name: '',
+            state: ''
           }).subscribe((page: Page<StreamDefinition>) => {
             this.resultSearch.stream = page;
             this.runningSearch.stream = false;
@@ -143,7 +147,9 @@ export class NavigationSearchComponent implements OnInit {
             page: 0,
             size: 5,
             sort: 'taskName',
-            order: 'ASC'
+            order: 'ASC',
+            name: '',
+            state: ''
           }).subscribe((page: Page<TaskDefinition>) => {
             this.resultSearch.task = page;
             this.runningSearch.task = false;

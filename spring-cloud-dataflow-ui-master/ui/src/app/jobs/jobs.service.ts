@@ -24,7 +24,8 @@ export class JobsService {
    */
   public static URL = {
     EXECUTIONS: '/jobs/executions',
-    THINEXECUTIONS: '/jobs/thinexecutions'
+    THINEXECUTIONS: '/jobs/thinexecutions',
+    JOBNAMES: '/jobs/instances/names'
   };
 
   /**
@@ -35,7 +36,9 @@ export class JobsService {
     order: 'ASC',
     page: 0,
     size: 30,
-    itemsSelected: []
+    itemsSelected: [],
+    name: '',
+    state: ''
   };
 
   /**
@@ -59,11 +62,27 @@ export class JobsService {
    */
   getJobExecutions(listParams: ListParams): Observable<Page<JobExecution>> {
     this.loggerService.log(`Get Job Executions`, listParams);
-    const params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
+    let params = HttpUtils.getPaginationParams(listParams.page, listParams.size);
+    if (listParams.name) {
+      params = params.append('name', listParams.name);
+    }
+
+    if (listParams.state) {
+      params = params.append('state', listParams.state);
+    }
+
     return this.httpClient
       .get<any>(JobsService.URL.THINEXECUTIONS, { params: params })
       .pipe(
         map(JobExecution.pageFromJSON),
+        catchError(this.errorHandler.handleError)
+      );
+  }
+
+  getJobNames(): Observable<any> {
+    return this.httpClient
+      .get<any>(JobsService.URL.JOBNAMES)
+      .pipe(
         catchError(this.errorHandler.handleError)
       );
   }

@@ -10,28 +10,67 @@
       restartable).
     </p>
 
-    <div class="list-bar" *ngIf="!(jobExecutions.totalPages < 2 && jobExecutions.items.length === 0)">
+    <div class="list-bar" *ngIf="!(jobExecutions.totalPages < 2 && jobExecutions.items.length === 0 && !isFilterEnabled)">
       <button class="btn btn-default btn-fa" (click)="refresh()" title="Refresh" type="button">
         <span class="fa fa-refresh"></span>
         Refresh
       </button>
     </div>
 
-    <table id="tableJobs" *ngIf="jobExecutions?.items && jobExecutions.items.length > 0"
-           class="table table-hover table-actions">
+    <table id="tableJobs"
+           class="table table-hover table-actions" style="font-weight: 400;">
       <thead>
       <tr>
         <th style="width: 100px">Execution Id</th>
         <th>Name</th>
         <th style="width: 100px">Task Id</th>
-        <th style="width: 100px">Instance Id</th>
+
         <th style="width: 200px">Job Start Time</th>
-        <th style="width: 150px" nowrap="">Step Execution Count</th>
+        <th style="width: 200px">Job End Time</th>
+
         <th style="width: 100px">Status</th>
+        <th>Actions</th>
+      </tr>
+      <tr>
+        <th style="width: 100px"></th>
+        <th>
+          <select #jobs (change)="onJobNameChange(jobs.value)" style="font-weight: 400;">
+            <option value="">Please select a job</option>
+            <option *ngFor="let i of jobNames">{{i}}</option>
+          </select>
+        </th>
+        <th></th>
+        <th style="width: 100px"></th>
+        <th style="width: 200px"></th>
+
+        <th style="width: 150px">
+          <select  #state (change)="onJobStateChange(state.value)" class="form-select" style="font-weight: 400;">
+          <option value="">Please select a type...</option>
+          <option value="STARTED">
+            STARTED
+          </option>
+          <option value="COMPLETED">
+            COMPLETED
+          </option>
+          <option value="FAILED">
+            FAILED
+          </option>
+        </select>
+        </th>
         <th>&nbsp;</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody *ngIf="!(jobExecutions?.items && jobExecutions.items.length > 0)">
+      <tr>
+        <td colspan="7" class="no-data-row">
+          <div id="empty" class="no-data">
+            <p>There are <strong>no batch job executions</strong> available for the given filter.</p>
+            <p>You can <a href="javascript:void(0);" (click)="refresh()">Refresh</a> the page.</p>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+      <tbody *ngIf="jobExecutions?.items && jobExecutions.items.length > 0">
       <tr *ngFor="let item of jobExecutions.items | paginate: jobExecutions.getPaginationInstance(); index as i">
         <td>
           {{ item.jobExecutionId }}
@@ -43,9 +82,9 @@
         <td>
           <a style="cursor: pointer" (click)="viewTask(item)">{{ item.taskExecutionId }}</a>
         </td>
-        <td>{{ item.jobInstanceId }}</td>
+
         <td>{{ item.startTimeFormatted }}</td>
-        <td>{{ item.stepExecutionCount }}</td>
+        <td>{{ item.endTimeFormatted }}</td>
         <td>
           <app-job-execution-status [status]="item.status"></app-job-execution-status>
         </td>
@@ -61,7 +100,7 @@
                          [item]="'job execution'" [items]="'job executions'">
     </app-list-pagination>
 
-    <app-list-empty [page]="jobExecutions" [filters]="[]">
+    <app-list-empty [page]="jobExecutions" [filters]="[]" *ngIf="!(isFilterEnabled)">
       <p>There are <strong>no batch job executions</strong> currently available.</p>
       <p>
         You can <a (click)="refresh()">Refresh</a> the page.

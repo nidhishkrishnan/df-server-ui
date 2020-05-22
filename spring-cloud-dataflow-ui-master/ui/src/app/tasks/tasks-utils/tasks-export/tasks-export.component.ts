@@ -67,6 +67,8 @@ export class TasksExportComponent implements OnInit {
       size: 10000,
       sort: 'taskName',
       order: OrderParams.ASC,
+      name: '',
+      state: ''
     }).pipe(
       map((page: Page<TaskDefinition>) => {
         this.form.checkboxes = page.items.map(() => true);

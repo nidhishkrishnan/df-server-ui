@@ -1,0 +1,10 @@
+.no-data {
+  text-align: center;
+  background: #fff3e9;
+  padding: 1.5rem 2.5rem 1.5rem 2rem;
+}
+
+.no-data-row {
+  padding-left: 0px;
+  padding-right: 0px;
+}

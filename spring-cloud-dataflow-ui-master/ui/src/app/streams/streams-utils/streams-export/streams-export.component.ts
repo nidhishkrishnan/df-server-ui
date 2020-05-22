@@ -67,6 +67,8 @@ export class StreamsExportComponent implements OnInit {
       size: 10000,
       sort: 'name',
       order: OrderParams.ASC,
+      name: '',
+      state: ''
     }).pipe(
       map((page: Page<StreamDefinition>) => {
         this.form.checkboxes = page.items.map(() => true);

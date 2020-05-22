@@ -100,7 +100,7 @@ export class TasksService {
    * the results when returned from the Spring Cloud Data Flow server.
    */
   getExecutions(taskListParams: TaskListParams): Observable<Page<TaskExecution>> {
-    taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null };
+    taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null, name: '', state: ''};
     let params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
     if (taskListParams.q) {
       params = params.append('search', taskListParams.q);
@@ -180,7 +180,7 @@ export class TasksService {
    * @param {TaskListParams} taskListParams
    */
   getDefinitions(taskListParams: TaskListParams): Observable<Page<TaskDefinition>> {
-    taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null };
+    taskListParams = taskListParams || { q: '', page: 0, size: 20, sort: null, order: null, name: '', state: ''};
     let params = HttpUtils.getPaginationParams(taskListParams.page, taskListParams.size);
     if (taskListParams.q) {
       params = params.append('search', taskListParams.q);

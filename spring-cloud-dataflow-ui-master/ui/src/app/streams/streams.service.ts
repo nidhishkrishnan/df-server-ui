@@ -63,7 +63,7 @@ export class StreamsService {
    * the results when returned from the Spring Cloud Data Flow server.
    */
   getDefinitions(streamListParams: StreamListParams): Observable<Page<StreamDefinition>> {
-    streamListParams = streamListParams || { q: '', page: 0, size: 30, sort: null, order: null };
+    streamListParams = streamListParams || { q: '', page: 0, size: 30, sort: null, order: null, name: '', state: ''};
     this.loggerService.log('Getting paged stream definitions', streamListParams);
     let params = HttpUtils.getPaginationParams(streamListParams.page, streamListParams.size);
     if (streamListParams.q) {
