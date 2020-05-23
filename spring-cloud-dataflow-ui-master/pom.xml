@@ -4,8 +4,9 @@
 
 	<groupId>org.springframework.cloud</groupId>
 	<artifactId>spring-cloud-dataflow-ui</artifactId>
-	<version>3.0.0.BUILD-SNAPSHOT</version>
 	<packaging>jar</packaging>
+	<version>2.1.0.1-SNAPSHOT</version>
+
 	<name>Spring Cloud Data Flow User Interface</name>
 	<description>This application provides the Dashboard application of Spring Cloud Data Flow.</description>
 	<url>https://cloud.spring.io/spring-cloud-dataflow/</url>
@@ -14,10 +15,10 @@
 		<url>https://www.spring.io</url>
 	</organization>
 	<licenses>
-	  <license>
-	    <name>The Apache License, Version 2.0</name>
-	    <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-	  </license>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
 	</licenses>
 	<scm>
 		<url>https://github.com/spring-cloud/spring-cloud-dataflow-ui</url>
@@ -30,36 +31,6 @@
 			<id>ghillert</id>
 			<name>Gunnar Hillert</name>
 			<email>ghillert at pivotal.io</email>
-			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>https://www.spring.io</organizationUrl>
-			<roles>
-				<role>Project lead</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>ilayaperumalg</id>
-			<name>Ilayaperumal Gopinathan</name>
-			<email>ilayaperumalg at pivotal.io</email>
-			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>https://www.spring.io</organizationUrl>
-			<roles>
-				<role>Project lead</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>aclement</id>
-			<name>Andy Clement</name>
-			<email>aclement at pivotal.io</email>
-			<organization>Pivotal Software, Inc.</organization>
-			<organizationUrl>https://www.spring.io</organizationUrl>
-			<roles>
-				<role>Project lead</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>aboyko</id>
-			<name>Alex Boyko</name>
-			<email>aboyko at pivotal.io</email>
 			<organization>Pivotal Software, Inc.</organization>
 			<organizationUrl>https://www.spring.io</organizationUrl>
 			<roles>
@@ -146,11 +117,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			 <plugin>
+			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-				<filesets>
+					<filesets>
 						<fileset>
 							<directory>ui/node_modules</directory>
 							<followSymlinks>false</followSymlinks>
@@ -171,16 +142,28 @@
 							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							 <directory>ui/node</directory>
-							 <followSymlinks>false</followSymlinks>
+							<directory>ui/node</directory>
+							<followSymlinks>false</followSymlinks>
 						</fileset>
 						<fileset>
-							 <directory>ui/node_modules</directory>
-							  <followSymlinks>false</followSymlinks>
+							<directory>ui/node_modules</directory>
+							<followSymlinks>false</followSymlinks>
 						</fileset>
-				</filesets>
+					</filesets>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>checkstyle-validation</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 	<profiles>
@@ -199,4 +182,10 @@
 			</repositories>
 		</profile>
 	</profiles>
+	<distributionManagement>
+		<repository>
+			<id>nexus-site</id>
+			<url>https://nexus.affinitas.de/content/repositories/snapshots/de/affinitas/</url>
+		</repository>
+	</distributionManagement>
 </project>
